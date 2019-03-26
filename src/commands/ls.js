@@ -5,7 +5,7 @@ const copy = require("recursive-copy");
 
 module.exports.command = "init [name]";
 module.exports.describe =
-  "Lists all the VMs that currently store sdfsfilename.";
+  "todo";
 module.exports.builder = (yargs: any) => yargs;
 
 module.exports.handler = handleErrors(async (argv: {}) => {

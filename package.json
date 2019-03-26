@@ -15,7 +15,8 @@
   "dependencies": {
     "fs": "0.0.1-security",
     "recursive-copy": "^2.0.10",
-    "yargs": "^11.0.0"
+    "yargs": "^11.0.0",
+    "mongoose": "^5.4.11"
   },
   "devDependencies": {
     "eslint": "^4.18.0",
