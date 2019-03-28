@@ -1,6 +1,6 @@
 const handleErrors = require("../utils/handleErrors");
 const {
-  getProdURI
+  getProdURI, getTestURI
 } = require("../../templates/infra-authentication-server/src/utils/getConfigFile");
 const User = require("../../templates/infra-authentication-server/src/models/User");
 const mongoose = require("mongoose");
@@ -14,6 +14,8 @@ module.exports.handler = handleErrors(async argv => {
   // spin up the prod db
   // getUsers
   const uri = await getProdURI();
+  // const uri = await getTestURI();
+
 
   if (!uri) {
     console.error("Unable to get uri from config yaml file");
@@ -23,22 +25,6 @@ module.exports.handler = handleErrors(async argv => {
   if(!validateEmail(argv.email)) {
     console.info('invalid email: ', argv.email)
     return
-  }
-  const rootUsers = await User.find({ role: "root"});
-  if (!!rootUsers.length) {
-    console.error(
-      "there is someone with root privileges",
-      rootUsers
-    );
-    return;
-  }
-  const emailUsers = await User.find({ email: argv.email});
-  if (!!emailUsers.length) {
-    console.error(
-      "there is someone with the same email",
-      emailUsers
-    );
-    return;
   }
   const randomPassword = generatePassword();
   const userData = {
