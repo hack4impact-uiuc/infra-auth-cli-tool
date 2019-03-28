@@ -1,6 +1,4 @@
 const handleErrors = require("../utils/handleErrors");
-const fs = require("fs");
-const copy = require("recursive-copy");
 const {
   getProdURI
 } = require("../../templates/infra-authentication-server/src/utils/getConfigFile");
