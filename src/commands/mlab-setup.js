@@ -9,7 +9,7 @@ const readline = require('readline').createInterface({
 
 module.exports.command = "mlab-setup";
 module.exports.describe =
-    "Lists all the VMs that currently store sdfsfilename.";
+    "Enters mlab uri into config file";
 module.exports.builder = (yargs) => yargs;
 
 module.exports.handler = handleErrors(async (argv) => {
