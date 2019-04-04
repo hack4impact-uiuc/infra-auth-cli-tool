@@ -6,3 +6,5 @@ templates/
 credentials.json
 dist
 lib
+**/credentials.json
+**/token.json
