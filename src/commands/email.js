@@ -31,8 +31,22 @@ var questions = [
   }
 ];
 
+handleYesNoQuestions = async () => {
+  for(let i = 0; i < questions.length; i++){
+      const response = await inquirer.prompt(questions[i]);
+      console.log("Done");
+      // get first value in object ex. {"gmail_setup": false} and access its boolean value
+      if(!response[Object.keys(response)[0]]){
+        throw "Exiting setup...";
+      }
+  }
+}
 module.exports.handler = handleErrors(async (argv: {}) => {
-  await inquirer.prompt(questions);
+  try {
+    await handleYesNoQuestions();
+  } catch(e){
+    return console.error(e);
+  }
   if (!fs.existsSync(CREDENTIALS_PATH)) {
     console.error("Can't find file: credentials.json in root directory");
     // Do something
@@ -48,4 +62,5 @@ module.exports.handler = handleErrors(async (argv: {}) => {
     cwd: "src/utils",
     stdio: "inherit"
   });
+  console.log("Here");
 });

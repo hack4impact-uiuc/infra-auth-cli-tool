@@ -2,7 +2,8 @@
   "name": "auth-infra",
   "license": "MIT",
   "scripts": {
-    "build": "flow-remove-types src/ --out-dir lib && pkg . --out-path dist/"
+    "build": "flow-remove-types src/ --out-dir lib && pkg . --out-path dist/",
+    "dev": "flow-remove-types src/ --out-dir lib"
   },
   "bin": "lib/index.js",
   "pkg": {
