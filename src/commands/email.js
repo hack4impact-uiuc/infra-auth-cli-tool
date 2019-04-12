@@ -10,7 +10,7 @@ module.exports.describe = "Sets up the email tokens to use Gmail.";
 module.exports.builder = (yargs: any) => yargs;
 const CREDENTIALS_PATH = "./credentials.json";
 
-var questions = [
+const questions = [
   {
     type: "confirm",
     name: "gmail_setup",
@@ -31,19 +31,26 @@ var questions = [
   }
 ];
 
-handleYesNoQuestions = async () => {
-  for(let i = 0; i < questions.length; i++){
-      const response = await inquirer.prompt(questions[i]);
-      // get first value in object ex. {"gmail_setup": false} and access its boolean value
-      if(!response[Object.keys(response)[0]]){
-        throw "Exiting setup...";
-      }
+const final_question = [
+  {
+    type: "text",
+    name: "email_used",
+    message: "Great! What email did you use to set this up?"
   }
-}
+];
+handleYesNoQuestions = async () => {
+  for (let i = 0; i < questions.length; i++) {
+    const response = await inquirer.prompt(questions[i]);
+    // get first value in object ex. {"gmail_setup": false} and access its boolean value
+    if (!response[Object.keys(response)[0]]) {
+      throw "Exiting setup...";
+    }
+  }
+};
 module.exports.handler = handleErrors(async (argv: {}) => {
   try {
     await handleYesNoQuestions();
-  } catch(e){
+  } catch (e) {
     return console.error(e);
   }
   if (!fs.existsSync(CREDENTIALS_PATH)) {
@@ -52,13 +59,41 @@ module.exports.handler = handleErrors(async (argv: {}) => {
     return;
   }
 
-  console.log("Copying into directory...");
-
   fs.createReadStream(CREDENTIALS_PATH).pipe(
     fs.createWriteStream("src/utils/credentials.json")
   );
   await execPromise("node", ["gmail_create.js"], {
     cwd: "src/utils",
     stdio: "inherit"
+  });
+
+  const { email_used } = await inquirer.prompt(final_question);
+
+  fs.readFile("src/utils/token.json", "utf-8", (err1, token_str) => {
+    if (err1) {
+      console.error("There was a problem reading your token.json file.");
+      return;
+    }
+    fs.readFile("src/utils/credentials.json", "utf-8", (err2, cred_str) => {
+      if (err2) {
+        console.error(
+          "There was a problem reading your credentials.json file."
+        );
+        return;
+      }
+
+      const tokens = JSON.parse(token_str);
+      const credentials = JSON.parse(cred_str);
+
+      console.log(
+        "\n\nExcellent! You are ready to go! Here's your last task: copy the information below into a .env file in your root directory of your project. You are now all set to use email!\n"
+      );
+      console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
+      console.log(`INFRA_CLIENT_ID='${credentials.installed.client_id}'`);
+      console.log(
+        `INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'`
+      );
+      console.log(`INFRA_EMAIL='${email_used}'`);
+    });
   });
 });
