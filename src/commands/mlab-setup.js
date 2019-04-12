@@ -2,10 +2,7 @@ const handleErrors = require("../utils/handleErrors");
 const mongoose = require("mongoose")
 const jsYaml = require('js-yaml')
 const fs = require('fs')
-// const readline = require('readline').createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// })
+const readline = require('readline')
 
 module.exports.command = "mlab-setup";
 module.exports.describe =
@@ -13,6 +10,10 @@ module.exports.describe =
 module.exports.builder = (yargs) => yargs;
 
 module.exports.handler = handleErrors(async (argv) => {
+    readline.createInterface({
+             input: process.stdin,
+             output: process.stdout
+         })
     console.log('Enter mLab URI!...')
     readline.question('What is the URI of the DB?', async (uri) => {
         try {
