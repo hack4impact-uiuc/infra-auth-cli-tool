@@ -34,7 +34,6 @@ var questions = [
 handleYesNoQuestions = async () => {
   for(let i = 0; i < questions.length; i++){
       const response = await inquirer.prompt(questions[i]);
-      console.log("Done");
       // get first value in object ex. {"gmail_setup": false} and access its boolean value
       if(!response[Object.keys(response)[0]]){
         throw "Exiting setup...";
@@ -62,5 +61,4 @@ module.exports.handler = handleErrors(async (argv: {}) => {
     cwd: "src/utils",
     stdio: "inherit"
   });
-  console.log("Here");
 });
