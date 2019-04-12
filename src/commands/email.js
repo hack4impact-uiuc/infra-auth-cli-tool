@@ -88,12 +88,12 @@ module.exports.handler = handleErrors(async (argv: {}) => {
       console.log(
         "\n\nExcellent! You are ready to go! Here's your last task: copy the information below into a .env file in your root directory of your project. You are now all set to use email!\n"
       );
-      console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
+      console.log(`INFRA_EMAIL='${email_used}'`);
       console.log(`INFRA_CLIENT_ID='${credentials.installed.client_id}'`);
       console.log(
         `INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'`
       );
-      console.log(`INFRA_EMAIL='${email_used}'`);
+      console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
     });
   });
 });

@@ -2,10 +2,10 @@ const handleErrors = require("../utils/handleErrors");
 const mongoose = require("mongoose")
 const jsYaml = require('js-yaml')
 const fs = require('fs')
-const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
+// const readline = require('readline').createInterface({
+//     input: process.stdin,
+//     output: process.stdout
+// })
 
 module.exports.command = "mlab-setup";
 module.exports.describe =
