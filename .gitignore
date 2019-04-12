@@ -8,3 +8,4 @@ dist
 lib
 **/credentials.json
 **/token.json
+.DS_Store
