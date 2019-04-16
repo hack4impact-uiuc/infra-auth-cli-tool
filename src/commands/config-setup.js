@@ -1,10 +1,7 @@
 const handleErrors = require("../utils/handleErrors");
 const jsYaml = require('js-yaml')
 const fs = require('fs')
-const readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
+const readline = require('readline')
 
 module.exports.command = "config-setup";
 module.exports.describe =
@@ -12,19 +9,23 @@ module.exports.describe =
 module.exports.builder = (yargs) => yargs;
 
 module.exports.handler = handleErrors(async (argv) => {
+    let interface = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    })
     console.log('Note that Google Authentication and Gmail both require setting up Google Oauth.')
-    readline.question('Would you like to use Google Authentication for signing in? (yes/no):\n', async (choice1) => {
+    interface.question('Would you like to use Google Authentication for signing in? (yes/no): ', async (choice1) => {
         const c1 = choice1.toLowerCase()
         if (c1 !== 'yes' && c1 !== 'no') {
             return console.error("Invalid response. Please run again.")
         }
         console.log('Note that you should enable Gmail, security questions, or both for password recovery.')
-        readline.question('Would you like to use Gmail for password recovery? (yes/no): ', async (choice2) => {
+        interface.question('Would you like to use Gmail for password recovery? (yes/no): ', async (choice2) => {
             const c2 = choice2.toLowerCase()
             if (c2 !== 'yes' && c2 !== 'no') {
                 return console.error("Invalid response. Please run again.")
             }
-            readline.question('Would you like to use a security question for password recovery? (yes/no): ', async (choice3) => {
+            interface.question('Would you like to use a security question for password recovery? (yes/no): ', async (choice3) => {
                 const c3 = choice3.toLowerCase()
                 if (c3 !== 'yes' && c3 !== 'no') {
                     return console.error("Invalid response. Please run again.")
@@ -41,7 +42,7 @@ module.exports.handler = handleErrors(async (argv) => {
                     if (err) console.log(err, 'something went wrong')
                     else console.log('Success!')
                 })
-                readline.close()
+                interface.close()
             })
         })
     })
