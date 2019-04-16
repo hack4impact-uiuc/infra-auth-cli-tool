@@ -10,12 +10,12 @@ module.exports.describe =
 module.exports.builder = (yargs) => yargs;
 
 module.exports.handler = handleErrors(async (argv) => {
-    readline.createInterface({
+    let interface = readline.createInterface({
              input: process.stdin,
              output: process.stdout
          })
     console.log('Enter mLab URI!...')
-    readline.question('What is the URI of the DB?', async (uri) => {
+    interface.question('What is the URI of the DB?', async (uri) => {
         try {
             await mongoose.connect(uri, { useNewUrlParser: true })
             const configInfo = await jsYaml.safeLoad(fs.readFileSync('templates/infra-authentication-server/config/defaultroles.yml', 'utf8'))
@@ -28,6 +28,6 @@ module.exports.handler = handleErrors(async (argv) => {
         } catch (e) {
             console.log('Invalid URI or failure on mongoose\'s end!')
         }
-        readline.close()
+        interface.close()
     })
 });
