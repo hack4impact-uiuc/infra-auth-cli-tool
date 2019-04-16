@@ -4,6 +4,7 @@ const fs = require("fs");
 const copy = require("recursive-copy");
 const inquirer = require("inquirer");
 const execPromise = require("../utils/execPromise");
+const asyncReadFile = require("../utils/asyncReadFile");
 
 module.exports.command = "email";
 module.exports.describe = "Sets up the email tokens to use Gmail.";
@@ -55,7 +56,6 @@ module.exports.handler = handleErrors(async (argv: {}) => {
   }
   if (!fs.existsSync(CREDENTIALS_PATH)) {
     console.error("Can't find file: credentials.json in root directory");
-    // Do something
     return;
   }
 
@@ -69,31 +69,26 @@ module.exports.handler = handleErrors(async (argv: {}) => {
 
   const { email_used } = await inquirer.prompt(final_question);
 
-  fs.readFile("src/utils/token.json", "utf-8", (err1, token_str) => {
-    if (err1) {
-      console.error("There was a problem reading your token.json file.");
-      return;
-    }
-    fs.readFile("src/utils/credentials.json", "utf-8", (err2, cred_str) => {
-      if (err2) {
-        console.error(
-          "There was a problem reading your credentials.json file."
-        );
-        return;
-      }
-
-      const tokens = JSON.parse(token_str);
-      const credentials = JSON.parse(cred_str);
-
-      console.log(
-        "\n\nExcellent! You are ready to go! Here's your last task: copy the information below into a .env file in your root directory of your project. You are now all set to use email!\n"
-      );
-      console.log(`INFRA_EMAIL='${email_used}'`);
-      console.log(`INFRA_CLIENT_ID='${credentials.installed.client_id}'`);
-      console.log(
-        `INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'`
-      );
-      console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
-    });
-  });
+  let tokens;
+  let credentials;
+  try {
+    tokens = JSON.parse(await asyncReadFile("src/utils/token.json"));
+  } catch (e) {
+    console.error(e);
+    console.error("There was a problem reading your token.json file.");
+    return;
+  }
+  try {
+    credentials = JSON.parse(await asyncReadFile("src/utils/credentials.json"));
+  } catch (e) {
+    console.error("There was a problem reading your credentials.json file.");
+    return;
+  }
+  console.log(
+    "\n\nExcellent! You are ready to go! Here's your last task: copy the information below into a .env file in your root directory of your project. You are now all set to use email!\n"
+  );
+  console.log(`INFRA_EMAIL='${email_used}'`);
+  console.log(`INFRA_CLIENT_ID='${credentials.installed.client_id}'`);
+  console.log(`INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'`);
+  console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
 });
