@@ -11,5 +11,5 @@ roles:
   guest: null
 test_db: 'mongodb://product:infra28@ds111441.mlab.com:11441/auth-infra-server-test'
 useGoogleAuth: true
-security_question: false
-gmail: true
+security_question: true
+gmail: false

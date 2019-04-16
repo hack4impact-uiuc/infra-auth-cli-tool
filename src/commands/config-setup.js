@@ -17,14 +17,10 @@ const questions = [
         "Would you like to use Google Authentication for signing in?"
     },
     {
-      type: "confirm",
-      name: "gmail",
-      message: "Would you like to use Gmail for password recovery?"
-    },
-    {
-      type: "confirm",
-      name: "sq",
-      message: "Would you like to use a security question for password recovery?"
+      type: "rawlist",
+      name: "password",
+      message: "How would you like to handle password recovery?",
+      choices: ["Gmail", "Security Question", "Both"]
     }
 ];
 
@@ -44,8 +40,18 @@ module.exports.handler = handleErrors(async (argv) => {
     } catch (e) {
     return console.error(e);
     }
-    if (!responses[1] && !responses[2])
-        return console.error("Please enable either Gmail or security questions.")
+    if (responses[1] == "Gmail") {
+        responses[1] = true
+        responses[2] = false
+    }
+    else if (responses[1] == "Security Question") {
+        responses[1] = false
+        responses[2] = true
+    }
+    else {
+        responses[1] = true
+        responses[2] = true
+    }
     const configInfo = await jsYaml.safeLoad(fs.readFileSync(CONFIG_URL, 'utf8'))
     configInfo.useGoogleAuth = responses[0]
     configInfo.gmail = responses[1]
