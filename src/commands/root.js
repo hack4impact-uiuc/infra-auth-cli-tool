@@ -15,14 +15,17 @@ module.exports.handler = handleErrors(async argv => {
   // getUsers
   const uri = await getProdURI();
   // const uri = await getTestURI();
-
-
   if (!uri) {
     console.error("Unable to get uri from config yaml file");
     return;
   }
-  await mongoose.connect(uri, { useNewUrlParser: true });
-  if(!validateEmail(argv.email)) {
+  try {
+    await mongoose.connect(uri, { useNewUrlParser: true });
+  } catch (e) {
+    console.info(e)
+    return
+  }
+  if (!validateEmail(argv.email)) {
     console.info('invalid email: ', argv.email)
     return
   }
@@ -33,6 +36,13 @@ module.exports.handler = handleErrors(async argv => {
     role: 'root',
     verified: false
   };
+  const rootUsers = await User.find({ role: "root" });
+  const emailUsers = await User.find({ email: argv.email });
+  if (!!rootUsers.length || !!emailUsers.length) {
+    User.remove({}, () => {
+      console.info('successfully dropped User database')
+    })
+  }
   const user = new User(userData);
   try {
     await user.save();
@@ -49,10 +59,10 @@ module.exports.handler = handleErrors(async argv => {
 
 const generatePassword = () => {
   var length = 8,
-      charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
-      retVal = "";
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+    retVal = "";
   for (var i = 0, n = charset.length; i < length; ++i) {
-      retVal += charset.charAt(Math.floor(Math.random() * n));
+    retVal += charset.charAt(Math.floor(Math.random() * n));
   }
   return retVal;
 }
