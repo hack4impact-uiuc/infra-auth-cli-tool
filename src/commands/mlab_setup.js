@@ -4,7 +4,7 @@ const jsYaml = require('js-yaml')
 const fs = require('fs')
 const readline = require('readline')
 
-module.exports.command = "mlab-setup";
+module.exports.command = "mlab_setup";
 module.exports.describe =
     "Enters mlab uri into config file";
 module.exports.builder = (yargs) => yargs;
@@ -21,27 +21,25 @@ module.exports.handler = handleErrors(async (argv) => {
     interface.question('Enter your mLab URI', async (uri) => {
         try {
             await mongoose.connect(uri, { useNewUrlParser: true })
-            const configInfo = await jsYaml.safeLoad(fs.readFileSync('templates/infra-authentication-server/config/defaultroles.yml', 'utf8'))
+            const configInfo = await jsYaml.safeLoad(fs.readFileSync('config/defaultroles.yml', 'utf8'))
             console.log(uri)
             configInfo.prodURI = String(uri)
             console.log(uri)
             const yamlStr = jsYaml.safeDump({ ...configInfo })
-            await fs.writeFile('templates/infra-authentication-server/config/defaultroles.yml', yamlStr, (err) => {
+            await fs.writeFile('config/defaultroles.yml', yamlStr, (err) => {
                 if (err) {
                     console.log(err)
                 }
                 else {
                     console.log('Success!')
-                    interface.close()
-                    process.exit()
+
                 }
             })
         } catch (e) {
             console.log(uri)
             console.log(e)
             console.log('Invalid URI or failure on mongoose\'s end!')
-            interface.close()
-            process.exit()
+
         }
     })
 });

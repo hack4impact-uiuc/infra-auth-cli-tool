@@ -6,7 +6,7 @@ const inquirer = require("inquirer");
 const execPromise = require("../utils/execPromise");
 const asyncReadFile = require("../utils/asyncReadFile");
 
-module.exports.command = "email-setup";
+module.exports.command = "email_setup";
 module.exports.describe = "Sets up the email tokens to use Gmail.";
 module.exports.builder = (yargs: any) => yargs;
 const CREDENTIALS_PATH = "./credentials.json";
@@ -62,7 +62,8 @@ module.exports.handler = handleErrors(async (argv: {}) => {
   fs.createReadStream(CREDENTIALS_PATH).pipe(
     fs.createWriteStream("src/utils/credentials.json")
   );
-  await execPromise("node", ["gmail_create.js"], {
+  const gmailCreateFile = `${process.cwd()}/src/utils/gmail_create.js`
+  await execPromise("node", [gmailCreateFile], {
     cwd: "src/utils",
     stdio: "inherit"
   });

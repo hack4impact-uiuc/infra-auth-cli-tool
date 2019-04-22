@@ -3,11 +3,10 @@ const jsYaml = require('js-yaml')
 const fs = require('fs')
 const inquirer = require("inquirer")
 
-module.exports.command = "forgot-password-and-email-setup";
+module.exports.command = "forgot_password_email_setup";
 module.exports.describe =
     "Enters customizable configurations into config file";
 module.exports.builder = (yargs) => yargs;
-const CONFIG_URL = 'templates/infra-authentication-server/config/defaultroles.yml'
 
 const questions = [
     {
@@ -34,6 +33,7 @@ const questions = [
 }
 
  module.exports.handler = handleErrors(async (argv) => {
+    const configUrl = `${process.cwd()}/config/defaultroles.yml`
     try {
         console.log("Note that Google Authentication and Gmail both require setting up Google Oauth.")
         await askQuestions();
@@ -52,12 +52,14 @@ const questions = [
         responses[1] = true
         responses[2] = true
     }
-    const configInfo = await jsYaml.safeLoad(fs.readFileSync(CONFIG_URL, 'utf8'))
+    const configInfo = await jsYaml.safeLoad(fs.readFileSync(configUrl, 'utf8'))
     configInfo.useGoogleAuth = responses[0]
     configInfo.gmail = responses[1]
     configInfo.security_question = responses[2]
+
     const yamlStr = jsYaml.safeDump({ ...configInfo })
-    fs.writeFile(CONFIG_URL, yamlStr, (err) => {
+
+    fs.writeFile(configUrl, yamlStr, (err) => {
         if (err) console.log(err, 'Something went wrong')
         else console.log('Success!')
     })

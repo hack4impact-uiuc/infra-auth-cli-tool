@@ -2,7 +2,7 @@ const handleErrors = require("../utils/handleErrors");
 const jsYaml = require('js-yaml')
 const fs = require('fs')
 const inquirer = require("inquirer")
-module.exports.command = "setup-roles";
+module.exports.command = "roles_setup";
 module.exports.describe =
     "Customize roles positions";
 module.exports.builder = (yargs) => yargs;
@@ -74,17 +74,16 @@ module.exports.handler = handleErrors(async (argv) => {
     } catch (e) {
         return console.error(e);
     }
-    const configInfo = await jsYaml.safeLoad(fs.readFileSync('templates/infra-authentication-server/config/defaultroles.yml', 'utf8'))
+    const configInfo = await jsYaml.safeLoad(fs.readFileSync('config/defaultroles.yml', 'utf8'))
     console.log(roles)
     configInfo["roles"] = roles
     const yamlStr = jsYaml.safeDump({ ...configInfo })
-    await fs.writeFile('templates/infra-authentication-server/config/defaultroles.yml', yamlStr, (err) => {
+    await fs.writeFile('config/defaultroles.yml', yamlStr, (err) => {
         if (err) {
             console.log(err)
         }
         else {
             console.log('Success!')
-            process.exit()
         }
     })
 })
