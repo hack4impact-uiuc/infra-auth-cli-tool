@@ -6,7 +6,7 @@ const inquirer = require("inquirer");
 const execPromise = require("../utils/execPromise");
 const asyncReadFile = require("../utils/asyncReadFile");
 
-module.exports.command = "email";
+module.exports.command = "email-setup";
 module.exports.describe = "Sets up the email tokens to use Gmail.";
 module.exports.builder = (yargs: any) => yargs;
 const CREDENTIALS_PATH = "./credentials.json";
@@ -91,4 +91,5 @@ module.exports.handler = handleErrors(async (argv: {}) => {
   console.log(`INFRA_CLIENT_ID='${credentials.installed.client_id}'`);
   console.log(`INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'`);
   console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
+  //TODO: Make it write to the file
 });

@@ -3,7 +3,7 @@ const jsYaml = require('js-yaml')
 const fs = require('fs')
 const inquirer = require("inquirer")
 
-module.exports.command = "config-setup";
+module.exports.command = "forgot-password-and-email-setup";
 module.exports.describe =
     "Enters customizable configurations into config file";
 module.exports.builder = (yargs) => yargs;
