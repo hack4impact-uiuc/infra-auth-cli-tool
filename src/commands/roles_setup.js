@@ -75,7 +75,6 @@ module.exports.handler = handleErrors(async (argv) => {
         return console.error(e);
     }
     const configInfo = await jsYaml.safeLoad(fs.readFileSync('config/defaultroles.yml', 'utf8'))
-    console.log(roles)
     configInfo["roles"] = roles
     const yamlStr = jsYaml.safeDump({ ...configInfo })
     await fs.writeFile('config/defaultroles.yml', yamlStr, (err) => {

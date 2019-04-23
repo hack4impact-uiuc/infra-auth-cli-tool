@@ -22,10 +22,10 @@ module.exports.handler = handleErrors(async (argv) => {
     console.log("\n")
     await roles_setup(argv)
 
-    // console.log("\n")
-    // console.log("Let's set up the mlab url roles")
     console.log("\n")
-    // await mlab_setup(argv)
+    console.log("Let's set up the mlab url roles")
+    console.log("\n")
+    await mlab_setup(argv)
 
     console.log("\n")
     console.log("Let's set up the forgot password and email options")
