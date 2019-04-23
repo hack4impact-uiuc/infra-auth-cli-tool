@@ -28,7 +28,7 @@ const questions = [
     type: "confirm",
     name: "client_config",
     message:
-      'Click the big "Download Client Configuration" button. \n Save/copy this file into the root directory.\n Is this done?'
+      'Click the big "Download Client Configuration" button. \n Save/copy this file into the root of the new directory that has been created.\n Is this done?'
   }
 ];
 
@@ -62,7 +62,7 @@ module.exports.handler = handleErrors(async (argv: {}) => {
   fs.createReadStream(CREDENTIALS_PATH).pipe(
     fs.createWriteStream("src/utils/credentials.json")
   );
-  const gmailCreateFile = `${process.cwd()}/src/utils/gmail_create.js`
+  const gmailCreateFile = `${process.cwd()}/src/utils/gmailCreate.js`;
   await execPromise("node", [gmailCreateFile], {
     cwd: "src/utils",
     stdio: "inherit"
@@ -86,11 +86,20 @@ module.exports.handler = handleErrors(async (argv: {}) => {
     return;
   }
   console.log(
-    "\n\nExcellent! You are ready to go! Here's your last task: copy the information below into a .env file in your root directory of your project. You are now all set to use email!\n"
+    "\n\nExcellent! You are ready to go! Here are your credentials. They will be saved in .env in your root server directory. You are now all set to use email!\n"
   );
   console.log(`INFRA_EMAIL='${email_used}'`);
   console.log(`INFRA_CLIENT_ID='${credentials.installed.client_id}'`);
   console.log(`INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'`);
   console.log(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
-  //TODO: Make it write to the file
+  var stream = fs.createWriteStream(".env");
+  stream.once("open", function(fd) {
+    stream.write(`INFRA_EMAIL='${email_used}'\n`);
+    stream.write(`INFRA_CLIENT_ID='${credentials.installed.client_id}'\n`);
+    stream.write(
+      `INFRA_CLIENT_SECRET='${credentials.installed.client_secret}'\n`
+    );
+    stream.write(`INFRA_REFRESH_TOKEN='${tokens.refresh_token}'`);
+    stream.end();
+  });
 });

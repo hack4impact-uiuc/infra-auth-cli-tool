@@ -28,6 +28,9 @@ module.exports.handler = handleErrors(async (argv: {}) => {
     process.exit()
   }
   await git().silent(true).clone(INFRA_PATH, localPath)
-  console.log("Sucessfully created the repository")
   await process.chdir(localPath);
+  await execPromise("npm", ["install"], {
+    stdio: "inherit"
+  });
+  console.log("Sucessfully created the repository")
 });
