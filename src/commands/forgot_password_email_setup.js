@@ -3,9 +3,9 @@ const jsYaml = require('js-yaml')
 const fs = require('fs')
 const inquirer = require("inquirer")
 
-module.exports.command = "forgot_password_email_setup";
+module.exports.command = "config_setup";
 module.exports.describe =
-    "Enters customizable configurations into config file";
+    "Enters customizable configurations for password recovery into config file";
 module.exports.builder = (yargs) => yargs;
 
 const questions = [

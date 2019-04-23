@@ -22,9 +22,7 @@ module.exports.handler = handleErrors(async (argv) => {
         try {
             await mongoose.connect(uri, { useNewUrlParser: true })
             const configInfo = await jsYaml.safeLoad(fs.readFileSync('config/defaultroles.yml', 'utf8'))
-            console.log(uri)
             configInfo.prodURI = String(uri)
-            console.log(uri)
             const yamlStr = jsYaml.safeDump({ ...configInfo })
             await fs.writeFile('config/defaultroles.yml', yamlStr, (err) => {
                 if (err) {
@@ -39,7 +37,6 @@ module.exports.handler = handleErrors(async (argv) => {
             console.log(uri)
             console.log(e)
             console.log('Invalid URI or failure on mongoose\'s end!')
-
         }
     })
 });
