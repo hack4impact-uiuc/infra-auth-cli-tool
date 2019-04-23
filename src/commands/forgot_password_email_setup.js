@@ -33,7 +33,7 @@ const questions = [
 }
 
  module.exports.handler = handleErrors(async (argv) => {
-    const configUrl = `${process.cwd()}/config/defaultroles.yml`
+    const configUrl = `${process.cwd()}/config.yml`
     try {
         console.log("Note that Google Authentication and Gmail both require setting up Google Oauth.")
         await askQuestions();

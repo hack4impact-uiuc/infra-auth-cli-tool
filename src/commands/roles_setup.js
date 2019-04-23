@@ -74,11 +74,10 @@ module.exports.handler = handleErrors(async (argv) => {
     } catch (e) {
         return console.error(e);
     }
-    const configInfo = await jsYaml.safeLoad(fs.readFileSync('templates/infra-authentication-server/config/defaultroles.yml', 'utf8'))
-    console.log(roles)
+    const configInfo = await jsYaml.safeLoad(fs.readFileSync('config.yml', 'utf8'))
     configInfo["roles"] = roles
     const yamlStr = jsYaml.safeDump({ ...configInfo })
-    await fs.writeFile('templates/infra-authentication-server/config/defaultroles.yml', yamlStr, (err) => {
+    await fs.writeFile('config.yml', yamlStr, (err) => {
         if (err) {
             console.log(err)
         }
