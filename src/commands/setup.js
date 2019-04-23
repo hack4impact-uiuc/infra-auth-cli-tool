@@ -17,20 +17,20 @@ module.exports.handler = handleErrors(async (argv) => {
     // const configUrl = `${process.cwd()}/config.yml`
     await create_repository(argv)
 
-    // console.log("\n")
-    // console.log("Let's set up the different roles")
-    // console.log("\n")
-    // await roles_setup(argv)
+    console.log("\n")
+    console.log("Let's set up the different roles")
+    console.log("\n")
+    await roles_setup(argv)
 
-    // console.log("\n")
-    // console.log("Let's set up the mlab url roles")
-    // console.log("\n")
-    // await mlab_setup(argv)
+    console.log("\n")
+    console.log("Let's set up the mlab url roles")
+    console.log("\n")
+    await mlab_setup(argv)
 
-    // console.log("\n")
-    // console.log("Let's set up the forgot password and email options")
-    // console.log("\n")
-    // await forgot_password_email_setup(argv)
+    console.log("\n")
+    console.log("Let's set up the forgot password and email options")
+    console.log("\n")
+    await forgot_password_email_setup(argv)
 
     console.log("\n")
     console.log("Let's authenticate your email")
