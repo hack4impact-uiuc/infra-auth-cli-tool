@@ -22,7 +22,6 @@ module.exports.handler = handleErrors(async (argv: {}) => {
                 "Enter your mLab URI",
         })
     const uri = response["mlab"]
-
     try {
         await mongoose.connect(uri, { useNewUrlParser: true })
         fs.appendFileSync('.env', `INFRA_MONGO_URI='${String(uri)}'`);

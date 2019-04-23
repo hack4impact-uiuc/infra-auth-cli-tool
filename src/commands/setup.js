@@ -14,7 +14,7 @@ module.exports.builder = (yargs) => yargs;
 
 
 module.exports.handler = handleErrors(async (argv) => {
-    // const configUrl = `${process.cwd()}/config/defaultroles.yml`
+    // const configUrl = `${process.cwd()}/config.yml`
     await create_repository(argv)
 
     // console.log("\n")
