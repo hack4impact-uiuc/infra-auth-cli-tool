@@ -1,10 +1,8 @@
 // @flow
 const handleErrors = require("../utils/handleErrors");
 const fs = require("fs");
-const copy = require("recursive-copy");
 const inquirer = require("inquirer");
 const mongoose = require("mongoose")
-const jsYaml = require('js-yaml')
 
 
 module.exports.command = "mlab_setup";
@@ -27,20 +25,8 @@ module.exports.handler = handleErrors(async (argv: {}) => {
 
     try {
         await mongoose.connect(uri, { useNewUrlParser: true })
-        const configInfo = await jsYaml.safeLoad(fs.readFileSync('config/defaultroles.yml', 'utf8'))
-        console.log(uri)
-        configInfo.prodURI = String(uri)
-        console.log(uri)
-        const yamlStr = jsYaml.safeDump({ ...configInfo })
-        await fs.writeFile('config/defaultroles.yml', yamlStr, (err) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                console.log('Success!')
-
-            }
-        })
+        fs.appendFileSync('.env', `INFRA_MONGO_URI='${String(uri)}'`);
+        console.log(`Added to environment file: INFRA_MONGO_URI='${String(uri)}'\n`);
     } catch (e) {
         console.log(uri)
         console.log(e)
