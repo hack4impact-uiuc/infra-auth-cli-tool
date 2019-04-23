@@ -21,12 +21,12 @@ module.exports.handler = handleErrors(async (argv) => {
     interface.question('Enter your mLab URI', async (uri) => {
         try {
             await mongoose.connect(uri, { useNewUrlParser: true })
-            const configInfo = await jsYaml.safeLoad(fs.readFileSync('config/defaultroles.yml', 'utf8'))
+            const configInfo = await jsYaml.safeLoad(fs.readFileSync('config.yml', 'utf8'))
             console.log(uri)
             configInfo.prodURI = String(uri)
             console.log(uri)
             const yamlStr = jsYaml.safeDump({ ...configInfo })
-            await fs.writeFile('config/defaultroles.yml', yamlStr, (err) => {
+            await fs.writeFile('config.yml', yamlStr, (err) => {
                 if (err) {
                     console.log(err)
                 }
