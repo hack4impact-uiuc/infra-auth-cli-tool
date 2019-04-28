@@ -55,7 +55,7 @@ setEachRolesPermissions = async () => {
                 type: "checkbox",
                 name: "permission_level",
                 message:
-                    "The role " + roleName.toUpperCase() + " should be able to promote or demote people within these user permissions. \n For instance, if I'm a root user, I want the ability to promote a guest user to root and visa versa, so I would select both guest and root. \n The lowest permission level should not have anything selected since you don't need permission to sign up for this level. For instance, for the guest role I wouldn't select anything since anyone can sign up as a guest. \n Select ALL roles that the user would be able to promote/demote.",
+                    "The role " + roleName.toUpperCase() + " should be able to promote or demote people within these user permissions. \n For instance, if I'm a root user, I want the ability to promote a guest user to root and visa versa, so I would select both guest and root. \n The lowest permission level should not have anything selected since you don't need permission to sign up for this level. For instance, for the guest role I wouldn't select anything since anyone can sign up as a guest. \n Select ALL roles that the " + roleName.toUpperCase() + " would be able to promote/demote.",
                 choices: Object.keys(roles)
             })
         console.log(response["permission_level"])
@@ -82,7 +82,7 @@ module.exports.handler = handleErrors(async (argv) => {
             console.log(err)
         }
         else {
-            console.log('Success!')
+            console.log('Success!\n')
         }
     })
 })

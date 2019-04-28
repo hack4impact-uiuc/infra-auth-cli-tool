@@ -32,5 +32,5 @@ module.exports.handler = handleErrors(async (argv: {}) => {
   await execPromise("npm", ["install"], {
     stdio: "inherit"
   });
-  console.log("Sucessfully created the repository")
+  console.log("Sucessfully created the repository\n")
 });

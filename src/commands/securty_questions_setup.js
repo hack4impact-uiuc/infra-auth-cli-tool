@@ -61,7 +61,7 @@ module.exports.handler = handleErrors(async (argv) => {
             console.log(err)
         }
         else {
-            console.log('Success!')
+            console.log('Success!\n')
         }
     })
 })

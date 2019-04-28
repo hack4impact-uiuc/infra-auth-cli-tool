@@ -61,6 +61,6 @@ const questions = [
 
     fs.writeFile(configUrl, yamlStr, (err) => {
         if (err) console.log(err, 'Something went wrong')
-        else console.log('Success!')
+        else console.log('Success!\n')
     })
 })
